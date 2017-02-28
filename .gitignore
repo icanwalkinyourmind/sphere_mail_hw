@@ -9,7 +9,6 @@
 *.pydevproject
 .project
 .metadata
-bin/
 tmp/
 *.tmp
 *.bak
@@ -218,3 +217,7 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+simple_tasks/pm_to_blib
+calculator/blib/lib/rpn.pl
+calculator/blib/lib/tokenize.pl
+calculator/blib/lib/evaluate.pl
