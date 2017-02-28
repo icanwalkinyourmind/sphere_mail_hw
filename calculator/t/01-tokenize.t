@@ -6,7 +6,7 @@ use Test::More;
 use Test::Deep;
 use FindBin;
 
-sub tokenize($);
+#sub tokenize($);
 require "$FindBin::Bin/../lib/tokenize.pl";
 
 sub test_good_tokenize($$) {

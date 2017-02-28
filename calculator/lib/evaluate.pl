@@ -32,13 +32,16 @@ sub evaluate {
 			my $val2 = pop @ev_stack;
 			my $val1 = pop @ev_stack;
 			given ($_){
-				when (/+/) {push @ev_stack, ($val1+$val2);}
-				when () {}
+				when (/\+/) {push @ev_stack, $val1+$val2}
+				when (/-/) {push @ev_stack, $val1-$val2 }
+				when (/\*/) {push @ev_stack, $val1*$val2 }
+				when (/\//) {push @ev_stack, $val1/$val2 }
+				when (/^/) {push @ev_stack, $val1**$val2 }
 			}
 		}
 	}
 
-	return 0;
+	pop @ev_stack;
 }
 
 1;
