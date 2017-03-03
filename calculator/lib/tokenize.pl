@@ -50,7 +50,7 @@ sub tokenize {
 	#разбиваем на токены
 	@res = grep /\S/, split /([$symbols] | U[+-] | \d?\.?\d[Ee][+-]?\d)/x, $expr;
 	#для тестов
-	@res = map {if (/\d/) {$_*=1; "$_"} else {$_} } @res;
+	@res = map {if (/\d/) {0+$_} else {$_} } @res;
 	return \@res;
 }
 

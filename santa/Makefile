@@ -1,4 +1,4 @@
-# This Makefile is for the Local::App::Calculator extension to perl.
+# This Makefile is for the SecretSanta extension to perl.
 #
 # It was generated automatically by MakeMaker version
 # 6.66 (Revision: 66600) from the contents of
@@ -13,10 +13,10 @@
 
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
-#     NAME => q[Local::App::Calculator]
+#     NAME => q[SecretSanta]
 #     PREREQ_PM => {  }
 #     TEST_REQUIRES => {  }
-#     VERSION_FROM => q[bin/calculator]
+#     VERSION_FROM => q[bin/santa]
 
 # --- MakeMaker post_initialize section:
 
@@ -53,8 +53,8 @@ VENDORLIBEXP = /usr/share/perl5
 AR_STATIC_ARGS = cr
 DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
-NAME = Local::App::Calculator
-NAME_SYM = Local_App_Calculator
+NAME = SecretSanta
+NAME_SYM = SecretSanta
 VERSION = 1
 VERSION_MACRO = VERSION
 VERSION_SYM = 1
@@ -143,11 +143,11 @@ MM_REVISION = 66600
 # PARENT_NAME = NAME without BASEEXT and no trailing :: (eg Foo::Bar)
 # DLBASE  = Basename part of dynamic library. May be just equal BASEEXT.
 MAKE = make
-FULLEXT = Local/App/Calculator
-BASEEXT = Calculator
-PARENT_NAME = Local::App
+FULLEXT = SecretSanta
+BASEEXT = SecretSanta
+PARENT_NAME = 
 DLBASE = $(BASEEXT)
-VERSION_FROM = bin/calculator
+VERSION_FROM = bin/santa
 OBJECT = 
 LDFROM = $(OBJECT)
 LINKTYPE = dynamic
@@ -159,16 +159,14 @@ C_FILES  =
 O_FILES  = 
 H_FILES  = 
 MAN1PODS = 
-MAN3PODS = lib/evaluate.pl \
-	lib/rpn.pl \
-	lib/tokenize.pl
+MAN3PODS = 
 
 # Where is the Config information that we are using/depend on
 CONFIGDEP = $(PERL_ARCHLIB)$(DFSEP)Config.pm $(PERL_INC)$(DFSEP)config.h
 
 # Where to build things
-INST_LIBDIR      = $(INST_LIB)/Local/App
-INST_ARCHLIBDIR  = $(INST_ARCHLIB)/Local/App
+INST_LIBDIR      = $(INST_LIB)
+INST_ARCHLIBDIR  = $(INST_ARCHLIB)
 
 INST_AUTODIR     = $(INST_LIB)/auto/$(FULLEXT)
 INST_ARCHAUTODIR = $(INST_ARCHLIB)/auto/$(FULLEXT)
@@ -183,16 +181,10 @@ PERL_ARCHIVE       =
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = lib/evaluate.pl \
-	lib/rpn.pl \
-	lib/tokenize.pl
+TO_INST_PM = lib/SecretSanta.pm
 
-PM_TO_BLIB = lib/evaluate.pl \
-	blib/lib/evaluate.pl \
-	lib/tokenize.pl \
-	blib/lib/tokenize.pl \
-	lib/rpn.pl \
-	blib/lib/rpn.pl
+PM_TO_BLIB = lib/SecretSanta.pm \
+	blib/lib/SecretSanta.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -260,8 +252,8 @@ CI = ci -u
 RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
-DISTNAME = Local-App-Calculator
-DISTVNAME = Local-App-Calculator-1
+DISTNAME = SecretSanta
+DISTVNAME = SecretSanta-1
 
 
 # --- MakeMaker macro section:
@@ -414,14 +406,8 @@ POD2MAN_EXE = $(PERLRUN) "-MExtUtils::Command::MM" -e pod2man "--"
 POD2MAN = $(POD2MAN_EXE)
 
 
-manifypods : pure_all  \
-	lib/tokenize.pl \
-	lib/evaluate.pl \
-	lib/rpn.pl
-	$(NOECHO) $(POD2MAN) --section=$(MAN3EXT) --perm_rw=$(PERM_RW) \
-	  lib/tokenize.pl $(INST_MAN3DIR)/tokenize.$(MAN3EXT) \
-	  lib/evaluate.pl $(INST_MAN3DIR)/evaluate.$(MAN3EXT) \
-	  lib/rpn.pl $(INST_MAN3DIR)/rpn.$(MAN3EXT) 
+manifypods : pure_all 
+	$(NOECHO) $(NOOP)
 
 
 
@@ -448,21 +434,21 @@ clean_subdirs :
 
 clean :: clean_subdirs
 	- $(RM_F) \
-	  core.[0-9] $(INST_ARCHAUTODIR)/extralibs.all \
-	  *$(OBJ_EXT) perlmain.c \
-	  core.[0-9][0-9] *$(LIB_EXT) \
-	  MYMETA.json pm_to_blib.ts \
-	  $(BOOTSTRAP) MYMETA.yml \
-	  perl$(EXE_EXT) pm_to_blib \
-	  $(MAKE_APERL_FILE) core.[0-9][0-9][0-9][0-9] \
-	  core.*perl.*.? $(BASEEXT).def \
-	  perl.exe perl \
-	  so_locations $(BASEEXT).bso \
-	  tmon.out *perl.core \
-	  mon.out core.[0-9][0-9][0-9][0-9][0-9] \
-	  $(BASEEXT).x core \
-	  lib$(BASEEXT).def $(INST_ARCHAUTODIR)/extralibs.ld \
-	  core.[0-9][0-9][0-9] $(BASEEXT).exp \
+	  core.*perl.*.? core.[0-9] \
+	  $(INST_ARCHAUTODIR)/extralibs.all $(BASEEXT).x \
+	  perl.exe mon.out \
+	  *$(OBJ_EXT) $(BASEEXT).bso \
+	  *$(LIB_EXT) MYMETA.yml \
+	  $(BASEEXT).def core.[0-9][0-9][0-9][0-9][0-9] \
+	  pm_to_blib perlmain.c \
+	  core.[0-9][0-9][0-9] MYMETA.json \
+	  perl$(EXE_EXT) so_locations \
+	  perl core.[0-9][0-9][0-9][0-9] \
+	  $(BOOTSTRAP) pm_to_blib.ts \
+	  tmon.out $(MAKE_APERL_FILE) \
+	  core.[0-9][0-9] core \
+	  $(INST_ARCHAUTODIR)/extralibs.ld $(BASEEXT).exp \
+	  lib$(BASEEXT).def *perl.core \
 	  blibdirs.ts 
 	- $(RM_RF) \
 	  blib 
@@ -500,7 +486,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) 'meta-spec:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  url: http://module-build.sourceforge.net/META-spec-v1.4.html' >> META_new.yml
 	$(NOECHO) $(ECHO) '  version: 1.4' >> META_new.yml
-	$(NOECHO) $(ECHO) 'name: Local-App-Calculator' >> META_new.yml
+	$(NOECHO) $(ECHO) 'name: SecretSanta' >> META_new.yml
 	$(NOECHO) $(ECHO) 'no_index:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  directory:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - t' >> META_new.yml
@@ -523,7 +509,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",' >> META_new.json
 	$(NOECHO) $(ECHO) '      "version" : "2"' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
-	$(NOECHO) $(ECHO) '   "name" : "Local-App-Calculator",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "name" : "SecretSanta",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "no_index" : {' >> META_new.json
 	$(NOECHO) $(ECHO) '      "directory" : [' >> META_new.json
 	$(NOECHO) $(ECHO) '         "t",' >> META_new.json
@@ -833,9 +819,7 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  lib/evaluate.pl blib/lib/evaluate.pl \
-	  lib/tokenize.pl blib/lib/tokenize.pl \
-	  lib/rpn.pl blib/lib/rpn.pl 
+	  lib/SecretSanta.pm blib/lib/SecretSanta.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 
