@@ -26,7 +26,7 @@ sub rpn {
 	my $source = tokenize($expr);
 	my @rpn;
 	my @op_stack = ();
-	my $op_symbols = '\+ \- \* \^ \/';
+	my $op_symbols = '\+ \- \* \/';
 	my %op_priority = (
 					'U+' => 4, 'U-' => 4,
 					'^' => 3,
@@ -44,13 +44,13 @@ sub rpn {
 				}
 				pop @op_stack;
 			}
-			when (/[$op_symbols]|(U[+-])/) {
+			when (/[$op_symbols\^]|(U[+-])/) {
 				my $mark = '';
 				until ($mark eq 'end'){
 					unless (@op_stack) {push @op_stack, $_; continue}
 					#правоассоциативный
-					if (/\^|(U[+-])/){
-						if ($op_priority{$_} < $op_priority{ $op_stack[-1]} ){
+					if (/\^|(U[+-])/ and $op_stack[-1] =~ /[$op_symbols]/) {
+						if ($op_priority{$_} < $op_priority{ $op_stack[-1] }) {
 							push @rpn, pop @op_stack;
 						}
 						else{
@@ -60,7 +60,7 @@ sub rpn {
 					}
 					#левоассоциативный
 					else{
-						if ($op_priority{$_} <= $op_priority{ $op_stack[-1]}){
+						if ($op_priority{$_} <= $op_priority{ $op_stack[-1] }) {
 							push @rpn, pop @op_stack;							
 						}
 						else{
