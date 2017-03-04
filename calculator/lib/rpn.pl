@@ -81,6 +81,4 @@ sub rpn {
 	return \@rpn;
 }
 
-print join ':', @{rpn('-2^3')};
-
 1;
