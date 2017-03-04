@@ -48,15 +48,10 @@ sub rpn {
 				my $mark = '';
 				until ($mark eq 'end'){
 					unless (@op_stack) {push @op_stack, $_; continue}
-					#правоассоциативный
-					if (/\^|(U[+-])/ and $op_stack[-1] =~ /[$op_symbols]/) {
-						if ($op_priority{$_} < $op_priority{ $op_stack[-1] }) {
-							push @rpn, pop @op_stack;
-						}
-						else{
-							push @op_stack, $_;
-							$mark = 'end';
-						}
+					#правоассоциативный равный приоритет
+					if (/\^|(U[+-])/ and ($op_priority{ $op_stack[-1] } > $op_priority{$_})) {
+						push @op_stack, $_;
+						$mark = 'end';
 					}
 					#левоассоциативный
 					else{
@@ -80,5 +75,7 @@ sub rpn {
 
 	return \@rpn;
 }
+
+print join ':', @{rpn('-(-1+-2)*-2^-3')};
 
 1;
