@@ -49,9 +49,20 @@ sub rpn {
 				until ($mark eq 'end'){
 					unless (@op_stack) {push @op_stack, $_; continue}
 					#правоассоциативный равный приоритет
+<<<<<<< HEAD
 					if (/\^|(U[+-])/ and ($op_priority{ $op_stack[-1] } == $op_priority{$_})) {
 						push @op_stack, $_;
 						$mark = 'end';
+=======
+					if (/\^|(U[+-])/){
+						if ($op_priority{$_} < $op_priority{ $op_stack[-1]} ){
+							push @rpn, pop @op_stack;
+						}
+						else{
+							push @op_stack, $_;
+							$mark = 'end';
+						}
+>>>>>>> 18b9e546b96214697feae52207f047e449ee5a79
 					}
 					#левоассоциативный
 					else{
@@ -76,4 +87,9 @@ sub rpn {
 	return \@rpn;
 }
 
+<<<<<<< HEAD
+=======
+print join ':', @{rpn('-2^3')};
+
+>>>>>>> 18b9e546b96214697feae52207f047e449ee5a79
 1;
