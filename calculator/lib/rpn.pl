@@ -49,7 +49,7 @@ sub rpn {
 				until ($mark eq 'end'){
 					unless (@op_stack) {push @op_stack, $_; continue}
 					#правоассоциативный равный приоритет
-					if (/\^|(U[+-])/ and ($op_priority{ $op_stack[-1] } > $op_priority{$_})) {
+					if (/\^|(U[+-])/ and ($op_priority{ $op_stack[-1] } == $op_priority{$_})) {
 						push @op_stack, $_;
 						$mark = 'end';
 					}
@@ -75,7 +75,5 @@ sub rpn {
 
 	return \@rpn;
 }
-
-print join ':', @{rpn('-(-1+-2)*-2^-3')};
 
 1;

@@ -26,28 +26,28 @@ sub calculate {
 		}
 	}
 	
-	my $gifter = [keys %members]->[0];
-	while (keys %members > 2) {
-		foreach my $key (keys %members) {
-			if (not $key eq $gifter and defined $members{$key}){
-				unless ($gifter eq $members{$key}{spouse}) {
-					push @res, [$gifter, $key];
-					if ($members{$key}{spouse} eq 'no spouse'){
-						$members{$key}{spouse} = $gifter;
-					}
-					else{
-						$members{$gifter}{spouse} = $key;
-					}
-					$members{$key}{have_gift} = 1;
-					$members{$key}{gifter} = 1;
-					$gifter = $key;
+	my $gifter = [keys %members]->[-1];
+	foreach my $key (keys %members) {
+		if (not $key eq $gifter and defined $members{$key}){
+			unless ($gifter eq $members{$key}{spouse}) {
+				push @res, [$gifter, $key];
+				if ($members{$key}{spouse} eq 'no spouse'){
+					$members{$key}{spouse} = $gifter;
 				}
-			}
-			if ($members{$key}{have_gift} and $members{$key}{gifter}){
+				else{
+					$members{$gifter}{spouse} = $key;
+				}
+				$members{$key}{have_gift} = 1;
+				$members{$key}{gifter} = 1;
+				$gifter = $key;
 				delete $members{$key};
 			}
 		}
+		#if ($members{$key}{have_gift} and $members{$key}{gifter}){
+		#	delete $members{$key};
+		#}
 	}
+
 
 	return @res;
 }
