@@ -63,6 +63,7 @@ for my $var (@list) {
 }
 
 my @res = SecretSanta::calculate(@list);
+say join ':', @res;
 is 0+@res, $members, "Result list have correct count";
 for (@res) {
 	is ref $_, 'ARRAY', 'Result have correct format' or BAIL_OUT;
