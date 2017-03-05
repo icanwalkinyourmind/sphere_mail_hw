@@ -4,9 +4,11 @@ use 5.010;
 use strict;
 use warnings;
 use DDP;
-use utf8;
 use Data::Dumper;
+use Encode;
+use utf8;
 use Text::Unidecode;
+
 =encoding UTF8
 
 =head1 SYNOPSIS
@@ -45,18 +47,18 @@ anagram(['пятак', 'ЛиСток', 'пятка', 'стул', 'ПяТаК', '
 sub anagram {
     my $words_list = shift;
     my %result;
-    
+    my %matched;
     foreach my $word (@{$words_list}) {
-        my $matched = undef;
-	$word =~ s/($word)/\L$1/;
+        $word =~ s/(\w)/\l$1/g;
         for (keys %result){
-            if ($_ =~ /^[$word]+$/){
+            if (/^[$word]+$/ and not defined $matched{$word}){
                 push @{$result{$_}}, $word;
-                $matched = 'yes';
+                $matched{$word} = 'yes';
             }
         }
-        unless (defined $matched){
-            $result{$word} = [];
+        unless (defined $matched{$word}){
+            $result{$word} = [$word];
+            $matched{$word} = 'yes';
         }
     }
     
@@ -69,8 +71,10 @@ sub anagram {
 	}
     }
     
-
     return \%result;
 }
+
+my $result = Anagram::anagram([qw(пятка слиток пятак ЛиСток стул ПяТаК тяпка столик слиток)]);
+my $dump = Data::Dumper->new([$result])->Purity(1)->Terse(1)->Indent(0)->Sortkeys(0);
 
 1;
