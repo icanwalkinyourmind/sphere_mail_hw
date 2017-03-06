@@ -3,7 +3,6 @@ package DeepClone;
 use 5.010;
 use strict;
 use warnings;
-no warnings 'experimental'; # for smatrtmatch
 
 
 my %refs; 
@@ -31,7 +30,7 @@ sub clone {
 		}
 		return \%new_hash;
 	}
-	elsif (scalar($orig) ~~ $orig) {
+	elsif (not ref $orig) {
 		return save_scalar($orig);
 	}
 	else{
