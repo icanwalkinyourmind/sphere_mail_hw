@@ -17,6 +17,8 @@ sub parse_file {
     
     open my $fd, "-|", "bunzip2 < $file" or die "Can't open '$file': $!";
     
+    my $i=1;
+    
     while (my $log_line = <$fd>) {
         $log_line =~ s/(\"\w.+?\" )//g;
         $log_line =~ /(?<ip> \d+(\.\d+){3} ).*\[
@@ -27,7 +29,7 @@ sub parse_file {
         my %request = %+;
         delete $request{ip};
         $result{$+{ip}} = [] if not defined $result{$+{ip}};
-        push $result{$+{ip}}, \%request;
+        push @{ $result{ $+{ip} } }, \%request;
     }
     
     close $fd;
