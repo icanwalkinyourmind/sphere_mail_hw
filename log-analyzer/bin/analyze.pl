@@ -20,7 +20,8 @@ sub parse_file {
     my $i=1;
     
     while (my $log_line = <$fd>) {
-        $log_line =~ s/(\"\w.+?\" )//g;
+        $log_line =~ s/\"[-a-zA-Z][^\"]*\"//g;
+        print "$log_line\n";
         $log_line =~ /(?<ip> \d+(\.\d+){3} ).*\[
                       (?<time> .+\d\d:\d\d ):.+\s+
                       (?<status> \d+ )\s+
