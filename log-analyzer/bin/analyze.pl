@@ -17,8 +17,6 @@ sub parse_file {
     
     open my $fd, "-|", "bunzip2 < $file" or die "Can't open '$file': $!";
     
-    my $i=1;
-    
     while (my $log_line = <$fd>) {
         $log_line =~ s/\"[-a-zA-Z][^\"]*\"//g;
         print "$log_line\n";
