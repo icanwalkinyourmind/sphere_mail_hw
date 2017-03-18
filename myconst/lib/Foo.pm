@@ -1,10 +1,13 @@
 #!/usr/bin/perl -w
-use strict;
+package Foo;
+use Data::Dumper;
+
 use myconst math => {
                 PI => 3.14,
                 E => 2.7,
             },
-            ZERO => 10,
+            ZERO => 0,
             EMPTY_STRING => '';
-use v5.10;
 
+
+1;

@@ -9,50 +9,32 @@ sub import {
     shift;
     my @input = @_;
     no strict 'refs';
-    our %const;
-    $const{all} = {};
-    my $caller = caller;
-    
-    my $i = 0;
-    while ($i <= $#input) {
+    our $caller = caller;
+    push @{$caller."::ISA"}, 'Exporter';
+    ${$caller."::EXPORT_TAGS"}{all}  = [];
+    for (my $i=0; $i <= $#input; $i+=2) {
+        
         #создание констант
-        if (not ref $input[$i+1]
-                and not $input[$i] =~ /^:/
-                and not defined $const{all}{$input[$i]}) {
-            
+        if (not ref $input[$i+1]) {
             my ($k, $v) = ($input[$i], $input[$i+1]);
-            $const{all}{$k} = sub { $v };
-            *{$caller . "::$k"} = $const{all}{$k};
-            $i+=2;
-            next;
-            
+            *{$caller . "::$k"} = sub { $v };
+            push @{ ${$caller."::EXPORT_TAGS"}{all} }, $k;
+            push @{$caller."::EXPORT_OK"}, $k;
         }
         
         #создание групп констант
         if (ref $input[$i+1] eq 'HASH') {
             my %new = %{ $input[$i+1] };
+            ${$caller."::EXPORT_TAGS"}{$input[$i]}  = [];
             while (my ($k, $v) = each %new) {
-                $const{all}{$k} = sub { $v };
-                $const{$input[$i]}{$k} = $const{all}{$k};
-                *{$caller . "::$k"} = $const{all}{$k};
+                *{$caller . "::$k"} =  sub { $v };
+                push @{ ${$caller."::EXPORT_TAGS"}{$input[$i]} }, $k;
+                push @{ ${$caller."::EXPORT_TAGS"}{all} }, $k;
+                push @{$caller."::EXPORT_OK"}, $k;
             }
-            $i+=2;
-            next;
         }
-        
-        #вызов списка констант
-        if ($input[$i] =~ s/^://) {
-            while (my ($k, $v) = each %{ $const{$input[$i]} }) {
-                $const{all}{$k} = sub { $v };
-                $const{$input[$i]}{$k} = $const{all}{$k};
-                *{$caller . "::$k"} = $const{all}{$k};
-            }
-            $i+=2;
-            next;
-        }
-        
-        
     }
+
 }
 
 
