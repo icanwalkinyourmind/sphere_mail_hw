@@ -2,6 +2,7 @@
 
 use strict;
 use warnings;
+use POSIX;
 
 my $filepath = $ARGV[0];
 die "USAGE:\n$0 <log-file.bz2>\n"  unless $filepath;
@@ -17,18 +18,20 @@ sub parse_file {
     
     open my $fd, "-|", "bunzip2 < $file" or die "Can't open '$file': $!";
     
+    my $i = 0;
     while (my $log_line = <$fd>) {
-        $log_line =~ s/\"[-a-zA-Z][^\"]*\"//g;
-        print "$log_line\n";
-        $log_line =~ /(?<ip> \d+(\.\d+){3} ).*\[
-                      (?<time> .+\d\d:\d\d ):.+\s+
+        next unless ($log_line =~ s/\"[-a-zA-Z][^\"]*\"//g);
+        $log_line =~ /(?<ip> \d+(\.\d+){3} )\s+\[
+                      (?<time> .+\d\d:\d\d ):.+\]\s+
                       (?<status> \d+ )\s+
                       (?<data> \d+ )
-                      (.+(?<ratio> \d+.\d+ ) | .+)/x;
+                      (.+\"(?<ratio> [\d\.]+ )\" | .+)/x;
+                      #(.+\"(?<ratio> [\d\.]+ )\" | .+)/x; в таком варианте не будет учитывать коэффициенты в битых строках, и не пройдёт тест
         my %request = %+;
         delete $request{ip};
         $result{$+{ip}} = [] if not defined $result{$+{ip}};
         push @{ $result{ $+{ip} } }, \%request;
+        $i++;
     }
     
     close $fd;
@@ -48,12 +51,12 @@ sub report {
             
             my $ratio = (defined $_->{ratio}) ? $_->{ratio} : 1;
             $total{time}{$_->{time}} = '';
-            $total{data} += $_->{data} * $ratio / 1024 if ($_->{status} == 200);
+            $total{data} += floor ($_->{data} *  $ratio) / 1024  if ($_->{status} == 200);
             $total{status}{$_->{status}} += $_->{data} / 1024;
             
             if ($i < 10) {
                 $uniq{$_->{time}} = '';
-                $top{$ip}{data} += $_->{data} * $ratio / 1024 if ($_->{status} == 200);
+                $top{$ip}{data} += floor ($_->{data} * $ratio) / 1024 if ($_->{status} == 200);
                 $top{$ip}{status}{$_->{status}} += $_->{data} / 1024;
                 
             }
@@ -72,7 +75,7 @@ sub report {
     $total{avg} = $total{count} / keys $total{time};
     delete $total{time};
     
-    my @statuses = map {"data_$_"} sort { $a <=> $b  } keys $total{status};
+    my @statuses = map {"$_"} sort { $a <=> $b  } keys $total{status};
     my $format = "\t%s" x (3+@statuses);
     printf "%s$format\n", 'IP', 'count', 'avg', 'data', @statuses;
     
