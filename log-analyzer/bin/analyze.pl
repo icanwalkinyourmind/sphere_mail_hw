@@ -18,20 +18,18 @@ sub parse_file {
     
     open my $fd, "-|", "bunzip2 < $file" or die "Can't open '$file': $!";
     
-    my $i = 0;
     while (my $log_line = <$fd>) {
-        next unless ($log_line =~ s/\"[-a-zA-Z][^\"]*\"//g);
+        $log_line =~ s/\"[-a-zA-Z][^\"]*\"//g;
         $log_line =~ /(?<ip> \d+(\.\d+){3} )\s+\[
                       (?<time> .+\d\d:\d\d ):.+\]\s+
                       (?<status> \d+ )\s+
                       (?<data> \d+ )
                       (.+\"(?<ratio> [\d\.]+ )\" | .+)/x;
-                      #(.+\"(?<ratio> [\d\.]+ )\" | .+)/x; в таком варианте не будет учитывать коэффициенты в битых строках, и не пройдёт тест
+                      #(\s+\"(?<ratio> [\d\.]+ )\" | .+)/x; в таком варианте не будет учитывать коэффициенты в битых строках, и не пройдёт тест
         my %request = %+;
         delete $request{ip};
         $result{$+{ip}} = [] if not defined $result{$+{ip}};
         push @{ $result{ $+{ip} } }, \%request;
-        $i++;
     }
     
     close $fd;

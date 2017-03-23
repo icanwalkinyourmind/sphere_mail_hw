@@ -1,4 +1,6 @@
 #!/usr/bin/perl -w
 use strict;
-my $ref = 'abc';
-print scalar($ref);
+use warnings;
+use v5.010;
+
+say '\\';
