@@ -1,4 +1,4 @@
-# This Makefile is for the Local::Reducer extension to perl.
+# This Makefile is for the Local::MatrixMultiplier extension to perl.
 #
 # It was generated automatically by MakeMaker version
 # 7.24 (Revision: 72400) from the contents of
@@ -13,10 +13,9 @@
 
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
-#     NAME => q[Local::Reducer]
+#     NAME => q[Local::MatrixMultiplier]
 #     PREREQ_PM => {  }
 #     TEST_REQUIRES => {  }
-#     VERSION_FROM => q[lib/Local/Reducer.pm]
 
 # --- MakeMaker post_initialize section:
 
@@ -53,13 +52,13 @@ VENDORLIBEXP = /usr/share/perl5
 AR_STATIC_ARGS = cr
 DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
-NAME = Local::Reducer
-NAME_SYM = Local_Reducer
-VERSION = 1.00
+NAME = Local::MatrixMultiplier
+NAME_SYM = Local_MatrixMultiplier
+VERSION = 
 VERSION_MACRO = VERSION
-VERSION_SYM = 1_00
+VERSION_SYM = 
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 1.00
+XS_VERSION = 
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -143,11 +142,11 @@ MM_REVISION = 72400
 # PARENT_NAME = NAME without BASEEXT and no trailing :: (eg Foo::Bar)
 # DLBASE  = Basename part of dynamic library. May be just equal BASEEXT.
 MAKE = make
-FULLEXT = Local/Reducer
-BASEEXT = Reducer
+FULLEXT = Local/MatrixMultiplier
+BASEEXT = MatrixMultiplier
 PARENT_NAME = Local
 DLBASE = $(BASEEXT)
-VERSION_FROM = lib/Local/Reducer.pm
+VERSION_FROM = 
 OBJECT = 
 LDFROM = $(OBJECT)
 LINKTYPE = dynamic
@@ -182,13 +181,7 @@ PERL_ARCHIVEDEP    =
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = lib/Local/Reducer.pm \
-	lib/Local/Reducer/MaxDiff.pm \
-	lib/Local/Reducer/Sum.pm \
-	lib/Local/Row/JSON.pm \
-	lib/Local/Row/Simple.pm \
-	lib/Local/Source/Array.pm \
-	lib/Local/Source/Text.pm
+TO_INST_PM = lib/Local/MatrixMultiplier.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -257,8 +250,8 @@ CI = ci -u
 RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
-DISTNAME = Local-Reducer
-DISTVNAME = Local-Reducer-1.00
+DISTNAME = Local-MatrixMultiplier
+DISTVNAME = Local-MatrixMultiplier-
 
 
 # --- MakeMaker macro section:
@@ -496,12 +489,12 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) 'meta-spec:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  url: http://module-build.sourceforge.net/META-spec-v1.4.html' >> META_new.yml
 	$(NOECHO) $(ECHO) '  version: '\''1.4'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) 'name: Local-Reducer' >> META_new.yml
+	$(NOECHO) $(ECHO) 'name: Local-MatrixMultiplier' >> META_new.yml
 	$(NOECHO) $(ECHO) 'no_index:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  directory:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - t' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - inc' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version: '\''1.00'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: '\'''\''' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
 	$(NOECHO) $(ECHO) '{' > META_new.json
@@ -518,7 +511,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",' >> META_new.json
 	$(NOECHO) $(ECHO) '      "version" : "2"' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
-	$(NOECHO) $(ECHO) '   "name" : "Local-Reducer",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "name" : "Local-MatrixMultiplier",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "no_index" : {' >> META_new.json
 	$(NOECHO) $(ECHO) '      "directory" : [' >> META_new.json
 	$(NOECHO) $(ECHO) '         "t",' >> META_new.json
@@ -538,7 +531,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
 	$(NOECHO) $(ECHO) '   "release_status" : "stable",' >> META_new.json
-	$(NOECHO) $(ECHO) '   "version" : "1.00"' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : ""' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
 
@@ -847,27 +840,21 @@ testdb_static :: static pure_all
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Local-Reducer" VERSION="1.00">' > Local-Reducer.ppd
-	$(NOECHO) $(ECHO) '    <ABSTRACT></ABSTRACT>' >> Local-Reducer.ppd
-	$(NOECHO) $(ECHO) '    <AUTHOR></AUTHOR>' >> Local-Reducer.ppd
-	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> Local-Reducer.ppd
-	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="x86_64-linux-gnu-thread-multi-5.18" />' >> Local-Reducer.ppd
-	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> Local-Reducer.ppd
-	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> Local-Reducer.ppd
-	$(NOECHO) $(ECHO) '</SOFTPKG>' >> Local-Reducer.ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Local-MatrixMultiplier" VERSION="">' > Local-MatrixMultiplier.ppd
+	$(NOECHO) $(ECHO) '    <ABSTRACT></ABSTRACT>' >> Local-MatrixMultiplier.ppd
+	$(NOECHO) $(ECHO) '    <AUTHOR></AUTHOR>' >> Local-MatrixMultiplier.ppd
+	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> Local-MatrixMultiplier.ppd
+	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="x86_64-linux-gnu-thread-multi-5.18" />' >> Local-MatrixMultiplier.ppd
+	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> Local-MatrixMultiplier.ppd
+	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> Local-MatrixMultiplier.ppd
+	$(NOECHO) $(ECHO) '</SOFTPKG>' >> Local-MatrixMultiplier.ppd
 
 
 # --- MakeMaker pm_to_blib section:
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  'lib/Local/Reducer.pm' 'blib/lib/Local/Reducer.pm' \
-	  'lib/Local/Reducer/MaxDiff.pm' 'blib/lib/Local/Reducer/MaxDiff.pm' \
-	  'lib/Local/Reducer/Sum.pm' 'blib/lib/Local/Reducer/Sum.pm' \
-	  'lib/Local/Row/JSON.pm' 'blib/lib/Local/Row/JSON.pm' \
-	  'lib/Local/Row/Simple.pm' 'blib/lib/Local/Row/Simple.pm' \
-	  'lib/Local/Source/Array.pm' 'blib/lib/Local/Source/Array.pm' \
-	  'lib/Local/Source/Text.pm' 'blib/lib/Local/Source/Text.pm' 
+	  'lib/Local/MatrixMultiplier.pm' 'blib/lib/Local/MatrixMultiplier.pm' 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 

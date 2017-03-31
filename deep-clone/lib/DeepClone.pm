@@ -44,13 +44,4 @@ sub clone {
 	
 }
 
-my $CYCLE_HASH = { a => 1, b => 2 };
-$CYCLE_HASH->{c} = $CYCLE_HASH;
-$CYCLE_HASH->{d} = $CYCLE_HASH;
-$CYCLE_HASH->{e} = { a => 1, b => 2, c => [ { 1 => $CYCLE_HASH } ] };
-$CYCLE_HASH->{f} = $CYCLE_HASH->{e}{c};
-
-p $CYCLE_HASH;
-p clone($CYCLE_HASH);
-my $ref = clone($CYCLE_HASH);
 1;

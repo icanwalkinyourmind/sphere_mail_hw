@@ -5,35 +5,30 @@ use strict;
 use warnings;
 use DDP;
 use Data::Dumper;
-use utf8;
+use Encode;
 
 sub anagram {
     my $words_list = shift;
+    my %all;
+    my %first;
     my %result;
-    my %matched;
     foreach my $word (@{$words_list}) {
-        utf8::decode($word);
-        $word =~ s/(.+)/\L$1/;
-        for (keys %result){
-            if (/^[$word]+$/i and not defined $matched{$word}){
-                utf8::encode($word);
-                push @{$result{$_}}, $word;
-                $matched{$word} = 'yes';
-            }
-        }
-        unless (defined $matched{$word}){
-            $result{$word} = [$word];
-            $matched{$word} = 'yes';
-        }
-    }
     
-    for (keys %result){
-       	if (not defined $result{$_}->[1]){
-	    delete $result{$_} ;
-	}
-	else{
-	   @{$result{$_}} = sort {$a cmp $b} @{$result{$_}};
-	}
+        my $key =join '', (sort {$a cmp $b} split '', $word);
+        $first{$key} = $word unless exists $first{$key};
+        
+        if ( exists $result{$first{$key}} ) {
+            unless (exists $all{$word}) {
+                push @{$result{$first{$key}}}, $word;
+            }
+            $all{$word} = '';
+        } elsif (exists $all{$first{$key}}) {
+            $result{$first{$key}} = $all{$first{$key}};
+            push @{$result{$first{$key}}}, $word;
+            $all{$word} = '';
+        } else {
+            $all{$first{$key}} = [$word];
+        }
     }
     
     return \%result;
