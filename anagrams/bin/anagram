@@ -24,6 +24,8 @@ use IO::File;
 use Data::Dumper;
 use lib "$FindBin::Bin/../lib";
 use Anagram;
+use Time::HiRes qw ( gettimeofday );
+
 
 open(my $fh, '<', "$FindBin::Bin/../dict.txt") or die $!;
 my @list = map {
@@ -32,6 +34,8 @@ my @list = map {
 } grep { chomp; /\S/ } <$fh>;
 close($fh);
 
+my $start = gettimeofday;
 my $result = Anagram::anagram(\@list);
 say "$_: @{$result->{$_}}" foreach (sort keys %$result);
+say gettimeofday-$start;
 

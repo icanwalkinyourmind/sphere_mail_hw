@@ -12,22 +12,32 @@ sub anagram {
     my %all;
     my %first;
     my %result;
-    foreach my $word (@{$words_list}) {
+    foreach my $w (@{$words_list}) {
+        my $word = decode('utf8', $w);
+        $word = lc $word;
         $word = encode('utf8', $word);
-        say lc $word;
-        my $key =join '', (sort {$a cmp $b} split '', $word);
+        
+        my $key = join '', (sort {$a cmp $b} split '', $word);
         $first{$key} = $word unless exists $first{$key};
         
         if ( exists $result{$first{$key}} ) {
+            
             unless (exists $all{$word}) {
                 push @{$result{$first{$key}}}, $word;
+                @{$result{$first{$key}}} = sort {$a cmp $b} @{$result{$first{$key}}};
             }
             $all{$word} = '';
+            
         } elsif (exists $all{$first{$key}}) {
+            
             $result{$first{$key}} = $all{$first{$key}};
-            push @{$result{$first{$key}}}, $word;
-            $all{$word} = '';
-        } else {
+            if (not exists $all{$word}) {
+                push @{$result{$first{$key}}}, $word;
+                $all{$word} = '';
+            }
+            
+        }
+        else {
             $all{$first{$key}} = [$word];
         }
     }

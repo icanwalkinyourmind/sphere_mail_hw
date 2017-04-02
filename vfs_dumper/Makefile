@@ -1,4 +1,4 @@
-# This Makefile is for the DeepClone extension to perl.
+# This Makefile is for the VFS dumper extension to perl.
 #
 # It was generated automatically by MakeMaker version
 # 7.0401 (Revision: 70401) from the contents of
@@ -13,10 +13,10 @@
 
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
-#     NAME => q[DeepClone]
+#     NAME => q[VFS dumper]
 #     PREREQ_PM => {  }
 #     TEST_REQUIRES => {  }
-#     VERSION_FROM => q[bin/clone]
+#     VERSION_FROM => q[bin/vfs_dumper.pl]
 
 # --- MakeMaker post_initialize section:
 
@@ -53,8 +53,8 @@ VENDORLIBEXP = /usr/share/perl5
 AR_STATIC_ARGS = cr
 DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
-NAME = DeepClone
-NAME_SYM = DeepClone
+NAME = VFS dumper
+NAME_SYM = VFS_dumper
 VERSION = 1
 VERSION_MACRO = VERSION
 VERSION_SYM = 1
@@ -143,11 +143,11 @@ MM_REVISION = 70401
 # PARENT_NAME = NAME without BASEEXT and no trailing :: (eg Foo::Bar)
 # DLBASE  = Basename part of dynamic library. May be just equal BASEEXT.
 MAKE = make
-FULLEXT = DeepClone
-BASEEXT = DeepClone
+FULLEXT = VFS dumper
+BASEEXT = dumper
 PARENT_NAME = 
 DLBASE = $(BASEEXT)
-VERSION_FROM = bin/clone
+VERSION_FROM = bin/vfs_dumper.pl
 OBJECT = 
 LDFROM = $(OBJECT)
 LINKTYPE = dynamic
@@ -182,10 +182,10 @@ PERL_ARCHIVEDEP    =
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = lib/DeepClone.pm
+TO_INST_PM = lib/VFS.pm
 
-PM_TO_BLIB = lib/DeepClone.pm \
-	blib/lib/DeepClone.pm
+PM_TO_BLIB = lib/VFS.pm \
+	blib/lib/VFS.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -254,8 +254,8 @@ CI = ci -u
 RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
-DISTNAME = DeepClone
-DISTVNAME = DeepClone-1
+DISTNAME = VFS dumper
+DISTVNAME = VFS dumper-1
 
 
 # --- MakeMaker macro section:
@@ -468,7 +468,7 @@ realclean_subdirs :
 # Delete temporary files (via clean) and also delete dist files
 realclean purge ::  clean realclean_subdirs
 	- $(RM_F) \
-	  $(FIRST_MAKEFILE) $(MAKEFILE_OLD) 
+	  $(MAKEFILE_OLD) $(FIRST_MAKEFILE) 
 	- $(RM_RF) \
 	  $(DISTVNAME) 
 
@@ -490,7 +490,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) 'meta-spec:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  url: http://module-build.sourceforge.net/META-spec-v1.4.html' >> META_new.yml
 	$(NOECHO) $(ECHO) '  version: '\''1.4'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) 'name: DeepClone' >> META_new.yml
+	$(NOECHO) $(ECHO) 'name: '\''VFS dumper'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'no_index:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  directory:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - t' >> META_new.yml
@@ -513,7 +513,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",' >> META_new.json
 	$(NOECHO) $(ECHO) '      "version" : "2"' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
-	$(NOECHO) $(ECHO) '   "name" : "DeepClone",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "name" : "VFS dumper",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "no_index" : {' >> META_new.json
 	$(NOECHO) $(ECHO) '      "directory" : [' >> META_new.json
 	$(NOECHO) $(ECHO) '         "t",' >> META_new.json
@@ -827,7 +827,7 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  lib/DeepClone.pm blib/lib/DeepClone.pm 
+	  lib/VFS.pm blib/lib/VFS.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 
