@@ -12,6 +12,10 @@ $cv->begin;
 tcp_connect '0.0.0.0', 8888, sub {
     my ($fh) = @_ or die "connect failed: $!";
     my $s = 'GET https://mail.ru';
+    print "Подключились! Командуй шеф, могу выполнять вот эти команды:\n
+    Первым делом URL http(s)://smth.org\n
+    Дальше на выбор GET или HEAD\n
+    Завершить сеанс, а заодно и вырубить сервер FIN\n";
     my $hdl; $hdl = AnyEvent::Handle->new( fh => $fh,
           on_read => sub {
                 print delete $_[0]{rbuf};

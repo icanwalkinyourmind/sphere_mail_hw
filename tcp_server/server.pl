@@ -57,7 +57,7 @@ tcp_server '0.0.0.0', 8888, sub {
                       default {$_[0]->push_write("wrong command")}
                 }
           },
-          on_error => sub {say 'connection closed'}
+          on_error => sub {say 'connection closed'},
     );
     $connections{$hdl} = $hdl;
    };
