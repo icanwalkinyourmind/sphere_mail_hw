@@ -11,24 +11,22 @@ no warnings 'experimental::smartmatch';
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 
+sub b_to_json {
+	return $_[0] ? JSON::XS::true : JSON::XS::false;
+}
+
 sub mode2s {
 	my $mode = shift;
 	
 	my $result = {};
 	
-	$result->{other}->{execute} = $mode & 1 ? JSON::XS::true : JSON::XS::false;
-	$result->{other}->{write} = $mode & 2 ? JSON::XS::true : JSON::XS::false;
-	$result->{other}->{read} = $mode & 4 ? JSON::XS::true : JSON::XS::false;
+	my @var = qw /1 2 4 8 16 32 64 128 256/;
 	
-	$result->{group}->{execute} = $mode & 8 ? JSON::XS::true : JSON::XS::false;
-	$result->{group}->{write} = $mode & 16 ? JSON::XS::true : JSON::XS::false;
-	$result->{group}->{read} = $mode & 32 ? JSON::XS::true : JSON::XS::false;
-	
-	$result->{user}->{execute} = $mode & 64 ? JSON::XS::true : JSON::XS::false;
-	$result->{user}->{write} = $mode & 128 ? JSON::XS::true : JSON::XS::false;
-	$result->{user}->{read} = $mode & 256 ? JSON::XS::true : JSON::XS::false;
-	
-	
+	for my $group (qw /other group user/) {
+		for my $right (qw /execute write read/) {
+			$result->{$group}->{$right} = b_to_json($mode & shift @var);
+		}
+	}
 	
 	return $result;
 }

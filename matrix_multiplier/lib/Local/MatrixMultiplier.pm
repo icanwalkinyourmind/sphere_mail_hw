@@ -35,32 +35,47 @@ sub mult {
     
     my $N = @{$mat_a}-1;
     $mat_b = transp($mat_b);
+    my %forks;
+    my $n_of_child = 0;
+    
+    $SIG{CHLD} = sub {
+        while ((my $child = waitpid(-1, WUNTRACED)) > 0) {
+            my $r = $forks{$child};
+            while (<$r>) {
+                my @values = split " ", $_;
+                $res->[$values[0]]->[$values[1]] = $values[-1];
+            }
+            close $r;
+            delete $forks{$child};
+            $n_of_child--;
+        }
+    };
     
     die 'both matrix should be square' if @{$mat_a} != @{$mat_b};
     
-    my $n_of_child = 0;
     
     for my $i (0..$N) {
         for my $j (0..$N) {
-            my ($r, $w);
-            pipe($r,$w);
-            my $pid = fork();
-            if ($pid) {
-                close $w;
-                while (<$r>) {
-                    my @values = split " ", $_;
-                    my $t = $values[-1];
-                    $res->[$values[0]]->[$values[1]] = $values[-1];
-                };
-                close $r;
-                waitpid($pid, 0);
-            } elsif (not defined $pid) { 
-                say "can't fork";
+            if ($n_of_child < $max_child) {
+                my ($r, $w);
+                pipe($r,$w);
+                my $pid = fork(); $n_of_child++;
+                $forks{$pid} = $r;
+                if ($pid) {
+                    close $w;
+                } elsif (not defined $pid) { 
+                    say "can't fork";
+                } else {
+                    close $r;
+                    print $w "$i $j ".mult_rc($mat_a->[$i], $mat_b->[$j]);
+                    close $w;
+                    exit;
+                }
             } else {
-                close $r;
-                print $w "$i $j ", mult_rc($mat_a->[$i], $mat_b->[$j]);
-                close $w;
-                exit;
+                $res->[$i]->[$j] = mult_rc($mat_a->[$i], $mat_b->[$j]);
+                while (1) {
+                    last if $n_of_child < $max_child;
+                }
             }
         }
     }
