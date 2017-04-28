@@ -1,0 +1,9 @@
+<center>
+    <% IF err %><center class="error"><ol><h2>Errors:<h2><%FOR e IN err %><li><% e %></li><% END %></ol></center><% END %>
+    <h2>Auth</h2>
+    <form action="" method = "post" calss = "form_left">
+        <p><input type="text" name="username" placeholder="username" value = "<% username %>"/></p>
+        <p><input type="password" name="password" placeholder="password" /></p>
+        <p><input type="submit" value="Login" /></p>
+    </form>
+</center>

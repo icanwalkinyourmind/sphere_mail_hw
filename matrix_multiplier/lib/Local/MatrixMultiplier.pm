@@ -2,9 +2,7 @@ package Local::MatrixMultiplier;
 
 use strict;
 use warnings;
-use DDP;
 use POSIX ":sys_wait_h";
-use IPC::Open2;
 use v5.010;
 
 
@@ -73,9 +71,7 @@ sub mult {
                 }
             } else {
                 $res->[$i]->[$j] = mult_rc($mat_a->[$i], $mat_b->[$j]);
-                while (1) {
-                    last if $n_of_child < $max_child;
-                }
+                sleep(1);
             }
         }
     }
