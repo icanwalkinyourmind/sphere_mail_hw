@@ -20,10 +20,6 @@ get '/' => require_login sub {
     template 'index';
 };
 
-get '/test' => sub {
-    template 'inedx';
-};
-
 get '/login' => sub {
     template 'login' 
 };
@@ -105,7 +101,7 @@ post '/' => require_login sub {
     redirect '/' . unpack 'H*', pack 'Q', $id;  
 };
 
-post '/login' =>  require_login sub {
+post '/login' =>  sub {
     my ($success, $realm) = authenticate_user(
         params->{username}, params->{password}
     );
