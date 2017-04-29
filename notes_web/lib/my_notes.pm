@@ -58,6 +58,10 @@ post '/' => require_login sub {
         push @err, 'Note text should exist';
     }
     
+    if (length($text) > 255) {
+        push @err, 'Too large note, you have only 255 symbols';
+    }
+    
     if ($title =~ /\W/) {
         push @err, 'Title may contain only [A-Za-z0-9]';
     }
