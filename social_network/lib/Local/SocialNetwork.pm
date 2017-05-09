@@ -110,12 +110,13 @@ sub friends {
 sub handshakes {
     my $self = shift;
     my ($first, $second) = @_;
+    my $count = 0;
+    my %visited;
+    
     if ($first == $second) {
         die "choose not similar ID's";
     }
-    my $count = 0;
-    my %visited;
-    my @queue;
+    
     my $get_friends = sub {
         my $users = shift;
         my $sth = $self->{dbh}->prepare(
@@ -125,6 +126,7 @@ sub handshakes {
         $sth->execute($users);
         my $array_ref = $sth->fetchall_arrayref();
     };
+    
     my @next = ($first);
     while (@next){
         $visited{$_} = 0 for (@next);
