@@ -84,7 +84,8 @@ sub nofriends {
     my $array_ref = $self->{dbh}->selectall_arrayref(
         "select *
          from users
-         where id not in (select distinct who from relations);",
+         left join relations on users.id = relations.who
+         where who = null;",
         { Slice => {} }
     );
     return $array_ref;
@@ -93,10 +94,13 @@ sub nofriends {
 sub friends {
     my $self = shift;
     my ($first, $second) = @_;
+    if ($first == $second) {
+        die "choose not similar ID's";
+    }
     my $sth = $self->{dbh}->prepare(
-       "select *from users where id in
+       "select * from users where id in
         (select withwho from relations 
-        where who = ? and withwho in (select withwho from relations where who = ?))"  
+         where who = ? and withwho in (select withwho from relations where who = ?))"  
     );
     $sth->execute($first, $second);
     my $array_ref = $sth->fetchall_arrayref({});
@@ -107,43 +111,35 @@ sub handshakes {
     my $self = shift;
     my ($first, $second) = @_;
     if ($first == $second) {
-        return "choose not similar ID's";
+        die "choose not similar ID's";
     }
     my $count = 0;
-    my (%visited, %fired);
+    my %visited;
     my @queue;
-    $visited{$first} = 0;
     my $get_friends = sub {
-        my $user = shift;
+        my $users = shift;
         my $sth = $self->{dbh}->prepare(
             "select withwho from relations
-             where who = ?"
+             where who in (?)"
         );
-        $sth->execute($user);
-        my $hash_ref = $sth->fetchall_hashref('withwho');
+        $sth->execute($users);
+        my $array_ref = $sth->fetchall_arrayref();
     };
-    my $start = $get_friends->($first);
-    push @queue, keys %{$start};
-    while (@queue) {
-        $count++;
-        my @q = @queue;
-        @queue = ();
-        for (@q) {
-            $visited{$_} = 0;
-            my $friends = $get_friends->($_);
-            if (exists $friends->{$second}) {
-                @queue = ();
-                last;
-            } else {
-                for (keys %{$friends}) {
-                    if (not exists $visited{$_} and
-                        not exists $fired{$_}) {
-                        $fired{$_} = 0;
-                        push @queue, $_;
-                    }
-                }
+    my @next = ($first);
+    while (@next){
+        $visited{$_} = 0 for (@next);
+        my $next = join ', ', @next;
+        @next = ();
+        my $next_circle = $get_friends->($next);
+        for (@$next_circle) {
+            if ($second == $_) {
+                return $count;
+            }
+            if (not exists $visited{$_}) {
+                push @next, $_;
             }
         }
+        $count++;
     }
     return $count;
 }

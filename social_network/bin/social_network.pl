@@ -19,7 +19,7 @@ my $fd;
 open $fd, '<', $conf_file or die "can't open config";
 while (<$fd>) {
     chomp;
-    $config->{$1} = $2 if /(\w+):\s(.+)/;
+    $config->{$1} = $2 if /(\w+):\s(.+)$/;
 }
 close $fd;
 
@@ -38,7 +38,7 @@ elsif ($command eq 'num_handshakes') {
 }
 elsif ($command eq 'nofriends') {
     die "wrong number of users" if scalar @users != 0;
-    my $json = JSON::XS->new->encode($db->friends($users[0], $users[1]));
+    my $json = JSON::XS->new->encode($db->nofriends($users[0], $users[1]));
     say $json;
 } else {
     die "wrong command";
