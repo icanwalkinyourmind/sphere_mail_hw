@@ -15,3 +15,4 @@ for (1..10) {
 
 
 p my $h = stat();
+p $h = stat();

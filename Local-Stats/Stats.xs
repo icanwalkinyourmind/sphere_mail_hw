@@ -86,7 +86,7 @@ stat()
             }
             hv_store(output, key, len, newRV_inc((SV*) result), 0);
         }
-        stats = newHV();
+        hv_clear(stats);
         PUSHs(newRV((SV*) output));
         
 double
