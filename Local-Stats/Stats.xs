@@ -78,10 +78,11 @@ stat()
                 char func_name[17] = "Local::Stats::";
                 strcat(func_name, func);
                 ENTER; SAVETMPS; PUSHMARK(SP);
-                XPUSHs(sv_2mortal(newRV((SV*) values)));
-                double func_res = call_pv(func_name, G_DISCARD);
+                XPUSHs(sv_2mortal(newRV((SV*) values))); PUTBACK;
+                call_pv(func_name, G_ARRAY);
                 SPAGAIN;
-                hv_store(result, func_name, 3, newSVnv(func_res), 0);
+                double func_res = POPn; FREETMPS; LEAVE;
+                hv_store(result, func, 3, newSVnv(func_res), 0);
             }
             hv_store(output, key, len, newRV_inc((SV*) result), 0);
         }
