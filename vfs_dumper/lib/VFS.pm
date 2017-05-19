@@ -32,7 +32,7 @@ sub mode2s {
 }
 
 sub del {
-	return substr(${$_[0]}, 0, $_[1], '');
+	return substr($_[0], 0, $_[1], '');
 }
 
 sub parse {
@@ -48,15 +48,15 @@ sub parse {
 	
 W:	while ($buf) {
 		my $command = unpack "a", $buf;
-		del(\$buf, 1);		
+		del($buf, 1);		
 		for ($command) {
 			when ('D') {
 				my $name = unpack "n/a", $buf;
-				del(\$buf, length($name)+2);
+				del($buf, length($name)+2);
 				utf8::decode($name);
 				
 				my $mode = unpack "n", $buf;
-				del(\$buf, 2);
+				del($buf, 2);
 				
 				if (exists $link->{list}) {
 					my $new_dir = {};
@@ -74,17 +74,17 @@ W:	while ($buf) {
 			}
 			when ('F') {
 				my $name = unpack "n/a", $buf;
-				del(\$buf, length($name)+2);
+				del($buf, length($name)+2);
 				utf8::decode($name);
 				
 				my $mode = unpack "n", $buf;
-				del(\$buf, 2);
+				del($buf, 2);
 				
 				my $size =  unpack "N", $buf;
-				del(\$buf, 4);
+				del($buf, 4);
 				
 				my $sha1 = unpack "H40", $buf;
-				del(\$buf, 20);
+				del($buf, 20);
 				
 				my $new_file = {};
 				push @{$link->{list}}, $new_file;

@@ -1,4 +1,5 @@
 <h3>Note "<% title || 'untitled' %>"</h3>
 <div class="textarea_border">
+    <input type="hidden" name="csrf_token" value = "<% csrf_token %>" />
     <textarea name="note" class="paste_textarea" rows="15" style="oveflow: hidden; word-wrap: break-word; resize: none; height: 200px; width: 100%;"><% text %></textarea>
 </div>

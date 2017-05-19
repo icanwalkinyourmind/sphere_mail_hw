@@ -15,9 +15,10 @@ sub next {
     my $i = $self->{iter};
     $self->{iter} ++;
     return $self->{array}[$i];
+    #todo undef if end
 }
 
-sub has_next {
+sub _has_next {
     my $self = shift;
     return $self->{iter} < $self->{len};
 }

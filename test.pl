@@ -2,9 +2,10 @@
 use strict;
 use warnings;
 use v5.010;
-use AnyEvent::HTTP;
+use POSIX qw(strftime);
 
-   my $request = http_request GET => "http://mail.ru/", sub {
-      my ($body, $hdr) = @_;
-      print "$body\n";
-   };
+my $text = strftime "%T", gmtime(200);
+$text =~ /^(\d\d):(\d\d):(\d\d)$/;
+my $time = $1*3600 + $2*60 + $3;
+say $text;
+say $time;

@@ -10,7 +10,7 @@ sub test_setup {
 
     my $dt = DateTime->now;
     
-    $self->{track} = Local::MuscicLib::Track->new(
+    $self->{track} = Local::MusicLib::Track->new(
         name => 'this is a track',
         album_id => 1,
         duration => '00:04:20',
@@ -25,7 +25,7 @@ sub test_setup {
 sub test_construction {
         my $dt = DateTime->now;
         my $test = shift;
-        my $obj  = Local::MuscicLib::Track->new(
+        my $obj  = Local::MusicLib::Track->new(
             name => 'this is a track',
             album_id => 1,
             duration => '00:04:20',
@@ -54,7 +54,7 @@ sub test_insert_select {
 sub test_update {
     my $self = shift;
     
-    my $new_track = Local::MuscicLib::Track->new(
+    my $new_track = Local::MusicLib::Track->new(
         name => 'this is a new track',
         album_id => 1,
         duration => '00:04:20',

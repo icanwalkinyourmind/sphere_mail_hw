@@ -3,6 +3,7 @@ use utf8;
 use Dancer2;
 use Dancer2::Plugin::Database;
 use Dancer2::Plugin::Auth::Extensible;
+use Dancer2::Plugin::CSRF;
 use HTML::Entities;
 use Digest::CRC qw/crc64/;
 
@@ -17,11 +18,11 @@ any '/logout' => sub {
 };
 
 get '/' => require_login sub {
-    template 'index';
+    template 'index' => {csrf_token => get_csrf_token()};
 };
 
 get '/login' => sub {
-    template 'login' 
+    template 'login' => {csrf_token => get_csrf_token()} 
 };
 
 get qr{^/([a-f0-9]{16})$} => require_login sub {
@@ -34,13 +35,13 @@ get qr{^/([a-f0-9]{16})$} => require_login sub {
     $sth = database->prepare('SELECT note, title FROM notes where id = cast(? as signed)');
     unless ($sth->execute($id)) {
         response->status(404);
-        return template 'index' => {err => ['Note not found']};
+        return template 'index' => {err => ['Note not found'], csrf_token => get_csrf_token()};
     }
-    return template 'index'=> {err => ['It\'s not for your eyes']} unless $chek_rigthts;
+    return template 'index'=> {err => ['It\'s not for your eyes'], csrf_token => get_csrf_token()} unless $chek_rigthts;
     my $db_res = $sth->fetchrow_hashref();
     $db_res->{title} = encode_entities($db_res->{title}, '<>&"');
-    $db_res->{title} = encode_entities($db_res->{title}, '<>&"');
-    template 'show_note.tt' => {text => $db_res->{note}, title => $db_res->{title}};
+    $db_res->{note} = encode_entities($db_res->{note}, '<>&"');
+    template 'show_note.tt' => {text => $db_res->{note}, title => $db_res->{title}, csrf_token => get_csrf_token()};
 };
 
 post '/' => require_login sub {
@@ -65,7 +66,7 @@ post '/' => require_login sub {
     if (@err) {
         $text = encode_entities($text, '<>&"');
         $title = encode_entities($title, '<>&"');
-        return template 'index' => {text => $text, title => $title, err => \@err};
+        return template 'index' => {text => $text, title => $title, err => \@err, csrf_token => get_csrf_token()};
     }
     
     my $create_time = time();
@@ -83,7 +84,7 @@ post '/' => require_login sub {
        $check_db = $sth->execute($id, $title, $text, $create_time);
     }
     unless ($id) {
-        return template 'index' => {err => ["Try later"]};
+        return template 'index' => {err => ["Try later"], csrf_token => get_csrf_token()};
     }
     
     my $username = logged_in_user->{username};
@@ -111,7 +112,7 @@ post '/login' =>  sub {
         session logged_in_user => params->{username};
         redirect '/';
     } else {
-        return template 'login' => {err => ['Wrong username or password']};
+        return template 'login' => {err => ['Wrong username or password'], csrf_token => get_csrf_token()};
     }
 };
 
@@ -127,6 +128,20 @@ hook before_template_render => sub {
             $_->{id} = unpack 'H*', pack 'Q', $_->{id};
         }
         $tokens->{all_notes} = $all_notes if $not_empty;
+    }
+};  
+
+hook before => sub {
+    use DDP;
+    my $s = session;
+    p $s;
+    my $ttt = params->{csrf_token};
+    p $ttt;
+    if ( request->is_post() ) {
+        my $csrf_token = params->{'csrf_token'};
+        if ( !$csrf_token || !validate_csrf_token($csrf_token) ) {
+            redirect '/login?error=invalid_csrf_token';
+        }
     }
 };
 

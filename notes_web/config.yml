@@ -64,6 +64,7 @@ plugins:
     on_connect_do: ["SET NAMES 'utf8'", "SET CHARACTER SET 'utf8'"]
     log_queries: 1
   Auth::Extensible:
+    no_default_pages: 1
     realms:
       users:
         provider: 'Database'

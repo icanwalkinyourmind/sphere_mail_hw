@@ -6,6 +6,7 @@ use warnings;
 sub new {
     my ($class, %param) = @_;
     bless \%param, $class;
+    #todo json parse heare
 }
 
 sub get {

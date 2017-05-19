@@ -10,7 +10,7 @@ use URI;
 use DDP;
 
 my $cv = AnyEvent->condvar;
-$AnyEvent::HTTP::MAX_PER_HOST = 100;
+$AnyEvent::HTTP::MAX_PER_HOST = 10;
 
 sub run {
     my ($start_page, $parallel_factor) = @_;

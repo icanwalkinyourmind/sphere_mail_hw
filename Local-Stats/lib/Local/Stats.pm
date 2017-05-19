@@ -4,6 +4,7 @@ use 5.018000;
 use strict;
 use warnings;
 use Carp;
+use DDP;
 
 require Exporter;
 use AutoLoader;
@@ -25,34 +26,13 @@ our @EXPORT = qw();
 
 our $VERSION = '0.01';
 
+our %stat;
+our $coderef;
 
 require XSLoader;
 XSLoader::load('Local::Stats', $VERSION);
 
-
-my %stat;
-my $coderef;
-my @funcs = qw /sum min max cnt avg/;
-
-sub new {
-    $coderef = shift;
-    my $tovalidate;
-    $coderef->($tovalidate);
-    for my $v (@$tovalidate) {
-        for my $f (@funcs) {
-            die "wrong params in coderef" if $f ne $f;
-        }
-    }
-}
-
-sub add {
-    my ($met_name, $value) = @_;
-    if (not exists $stat{$met_name}) {
-       $coderef->($stat{$met_name}->{conf});
-    }
-    push @{$stat{$met_name}->{values}}, $value;
-}
-
+=XSed
 sub stat {
     my %output;
     for my $k (keys %stat) {
@@ -65,6 +45,7 @@ sub stat {
     %stat = ();
     return \%output;
 }
+=cut
 
 
 1;

@@ -13,7 +13,7 @@ sub new {
 sub reduce_n {
     my ($self, $n) = @_;
     for (1..$n) {
-        $self->reduce;
+        $self->reduce();
     }
     return $self->{initial_value};
 }
@@ -21,7 +21,7 @@ sub reduce_n {
 sub reduce_all {
     my $self = shift;
     while ($self->{source}->has_next) {
-        $self->reduce;
+        $self->reduce();
     }
     return $self->{initial_value};
 }

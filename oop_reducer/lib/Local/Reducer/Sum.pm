@@ -10,6 +10,7 @@ sub reduce {
     if (defined $row->get($self->{field})){
         $self->{initial_value} += $row->get($self->{field});
     }
+    #add default into get
 }
 
 1;
