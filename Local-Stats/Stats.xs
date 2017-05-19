@@ -113,7 +113,7 @@ avg(values)
         for (int i = 0; i <= num; i++){
             sum = sum + (double)SvNV(*av_fetch(values, i, 0));
         }
-        RETVAL = sum / num;
+        RETVAL = sum / (num+1);
     OUTPUT:
         RETVAL
 
